@@ -1,5 +1,7 @@
 import { BoardPiece } from "./BoardPiece";
 import { EmptyBoardPiece } from "./EmptyBoardPiece";
+import { InputMenu } from "./InputMenu";
+import { GridLabelBoardPiece } from "./GridLabelBoardPiece";
 
 class Board
 {
@@ -25,9 +27,32 @@ class Board
 
             for(let j = 0; j<this.width; j++)
             {
-                let emptyPiece: EmptyBoardPiece = new EmptyBoardPiece();
-                this.boardGrid[i][j] = emptyPiece;
 
+                if(i == 0)
+                {
+                    let gridLabel: GridLabelBoardPiece = new GridLabelBoardPiece();
+                    gridLabel.icon =  String.fromCharCode(96+j) + "         ";
+                    if(j<=0)
+                        gridLabel.icon = "     ";
+                    this.boardGrid[i][j] = gridLabel;
+                    
+                }
+
+                else if(j == 0)
+                {
+                    let gridLabel: GridLabelBoardPiece = new GridLabelBoardPiece();
+                    gridLabel.icon = i.toString();
+                    if(i <=0)
+                        gridLabel.icon = "   ";
+                    this.boardGrid[i][j] = gridLabel;   
+                }
+
+
+                else
+                {
+                    let emptyPiece: EmptyBoardPiece = new EmptyBoardPiece();
+                    this.boardGrid[i][j] = emptyPiece;
+                }
                 //this.boardGrid2[i].push(new EmptyBoardPiece());
             }
         }
@@ -37,16 +62,22 @@ class Board
     {
         for(let i: number = 0; i<this.height; i++)
             {
+                
+                let row: string = "";
                 for(let j = 0; j<this.width; j++)
                 {
                     //this.boardGrid[i][j].display();
-                    console.log(this.boardGrid[i][j]);
+                    row+= this.boardGrid[i][j].display();
+                   // this.boardGrid[i][j].display();
                 }
+                console.log(row);
+                console.log("");
             }
     }
 
     public displayBoardCell(x: number, y: number): BoardPiece
     {
+        this.boardGrid[x][y].display();
         return this.boardGrid[x][y];
     }
 
@@ -54,12 +85,19 @@ class Board
     {
         
     }
-}
 
+     getRandomIntInclusive(min:number, max:number):number {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+      }
+      
+}
 
 let board: Board = new Board();
 board.generateBoard();
 board.displayBoard();
+InputMenu.PlayerActionInputMenu();
 
 
 
