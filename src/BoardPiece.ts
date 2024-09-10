@@ -1,7 +1,12 @@
 export abstract class BoardPiece
 {
-         icon: string = "";
+         icon: string = "    []    ";
+         type: string = "null"
          visible: boolean = false;
+         isFlagged:boolean = false;
 
-         display(): void{};
+         display(): string{
+            //console.log("    []   ")
+            return this.icon;
+         };
 }

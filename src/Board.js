@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const EmptyBoardPiece_1 = require("./EmptyBoardPiece");
-const InputMenu_1 = require("./InputMenu");
 const GridLabelBoardPiece_1 = require("./GridLabelBoardPiece");
+const MineBoardPiece_1 = require("./MineBoardPiece");
+const BoardSettings_1 = require("./BoardSettings");
 class Board {
     constructor() {
         this.boardGrid2 = new Array();
+        this.boardSettings = new BoardSettings_1.BoardSettings();
         this.boardGrid = [];
         this.width = 7;
         this.height = 7;
@@ -54,9 +56,27 @@ class Board {
         return this.boardGrid[x][y];
     }
     addMines() {
+        for (let i = 0; i < this.boardSettings.numberOfMines; i++) {
+            let randomX = this.getRandomIntInclusive(1, this.width - 1);
+            let randomY = this.getRandomIntInclusive(1, this.height - 1);
+            if (this.boardGrid[randomX][randomY].type == "null") {
+                let newMine = new MineBoardPiece_1.MineBoardPiece();
+                this.boardGrid[randomX][randomY] = newMine;
+            }
+            else {
+                --i;
+            }
+        }
+    }
+    getRandomIntInclusive(min, max) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
     }
 }
 let board = new Board();
 board.generateBoard();
 board.displayBoard();
-InputMenu_1.InputMenu.PlayerActionInputMenu();
+board.addMines();
+board.displayBoard();
+//InputMenu.PlayerActionInputMenu();
